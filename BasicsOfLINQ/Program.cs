@@ -21,6 +21,9 @@ namespace BasicsOfLINQ
                 new User {Name="Джон", Age=29, Languages = new List<string> {"английский", "испанский" }},
                 new User {Name="Элис", Age=24, Languages = new List<string> {"испанский", "немецкий" }}
             };
+            List<User> users1 = new List<User>();
+            users1.Add(new User { Name = "Sam", Age = 43 });
+            users1.Add(new User { Name = "Tom", Age = 33 });
             #endregion
 
 
@@ -33,7 +36,8 @@ namespace BasicsOfLINQ
             //SelectionWithLINQ(teams, character);
             //#endregion
 
-            ComplexFiltersLINQ(users);
+            //ComplexFiltersLINQ(users);
+            ProjectionLINQ1(users1);
 
             Console.WriteLine("Конец программы. Для выхода из неё нажмите любую клавишу на клавиатуре.");
             Console.ReadKey();
@@ -195,6 +199,19 @@ namespace BasicsOfLINQ
 
             foreach (User user in selectedUsers)
                 Console.WriteLine($"{user.Name} - {user.Age}");
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Проекция с помощью операторов LINQ: выбор св-ва Name
+        /// </summary>
+        public static void ProjectionLINQ1(List<User> users)
+        {
+            var names = from u in users // Определяем каждый объект из users как u
+                        select u.Name; // Выбираем объект - имя пользователя
+
+            foreach (string n in names)
+                Console.WriteLine(n);
             Console.WriteLine();
         }
     }
