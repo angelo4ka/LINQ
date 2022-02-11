@@ -33,7 +33,7 @@ namespace BasicsOfLINQ
             //SelectionWithLINQ(teams, character);
             //#endregion
 
-            SelectingComplexObjEM(users);
+            ComplexFiltersLINQ(users);
 
             Console.WriteLine("Конец программы. Для выхода из неё нажмите любую клавишу на клавиатуре.");
             Console.ReadKey();
@@ -150,8 +150,6 @@ namespace BasicsOfLINQ
             Console.WriteLine();
         }
 
-
-
         /// <summary>
         /// Выборка сложных объектов с помощью метода расширения: выбор из пользователей, возраст которых больше 25 лет
         /// </summary>
@@ -161,6 +159,23 @@ namespace BasicsOfLINQ
             var selectedUsers = users.Where(u => u.Age > 25); // Выборка пользователей, возраст которых больше 25 лет
 
             // Вывод информации о пользователях из выборки
+            foreach (User user in selectedUsers)
+                Console.WriteLine($"{user.Name} - {user.Age}");
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Сложные фильтры с помощью операторов LINQ: фильтрование пользователей по языку (английский)
+        /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
+        public static void ComplexFiltersLINQ(List<User> users)
+        {
+            var selectedUsers = from user in users // Определяем каждый объект из users как user
+                                from lang in user.Languages // Определяем каждый объект из списка Languages у каждого пользователя как lang
+                                where user.Age < 28 // Находим пользователей, возраст которых меньше 28 лет
+                                where lang == "английский" // Находим пользователей с английским языком
+                                select user; // Выбираем объект
+
             foreach (User user in selectedUsers)
                 Console.WriteLine($"{user.Name} - {user.Age}");
             Console.WriteLine();
