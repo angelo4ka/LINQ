@@ -180,5 +180,22 @@ namespace BasicsOfLINQ
                 Console.WriteLine($"{user.Name} - {user.Age}");
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Сложные фильтры с помощью методов расширения: фильтрование пользователей по языку (английский)
+        /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
+        public static void ComplexFiltersEM(List<User> users)
+        {
+            var selectedUsers = users.SelectMany(u => u.Languages, // Последовательность, которую надо проецировать
+                            // Функция преобразования, которая применяется к каждому элементу
+                            (u, l) => new { User = u, Lang = l })
+                          .Where(u => u.Lang == "английский" && u.User.Age < 28)
+                          .Select(u => u.User);
+
+            foreach (User user in selectedUsers)
+                Console.WriteLine($"{user.Name} - {user.Age}");
+            Console.WriteLine();
+        }
     }
 }
