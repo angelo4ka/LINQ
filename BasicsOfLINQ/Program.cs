@@ -238,5 +238,24 @@ namespace BasicsOfLINQ
                 Console.WriteLine($"{n.FirstName} - {n.DateOfBirth}");
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Проекция с помощью метода расширения Select: выбор объекта анонимного типа
+        /// </summary>
+        public static void ProjectionEM(List<User> users)
+        {
+            var names = users.Select(u => u.Name); // Выборка имён
+
+            // Выборка объектов анонимного типа
+            var items = users.Select(u => new
+            {
+                FirstName = u.Name,
+                DateOfBirth = DateTime.Now.Year - u.Age
+            });
+
+            foreach (var n in items)
+                Console.WriteLine($"{n.FirstName} - {n.DateOfBirth}");
+            Console.WriteLine();
+        }
     }
 }
