@@ -24,6 +24,11 @@ namespace BasicsOfLINQ
             List<User> users1 = new List<User>();
             users1.Add(new User { Name = "Sam", Age = 43 });
             users1.Add(new User { Name = "Tom", Age = 33 });
+            List<Phone> phones = new List<Phone>()
+            {
+                new Phone {Name="Lumia 630", Company="Microsoft" },
+                new Phone {Name="iPhone 6", Company="Apple"},
+            };
             #endregion
 
 
@@ -37,7 +42,8 @@ namespace BasicsOfLINQ
             //#endregion
 
             //ComplexFiltersLINQ(users);
-            ProjectionLINQ1(users1);
+            //ProjectionLINQ1(users1);
+            SamplingFromMultipleSources(users1, phones);
 
             Console.WriteLine("Конец программы. Для выхода из неё нажмите любую клавишу на клавиатуре.");
             Console.ReadKey();
@@ -205,6 +211,7 @@ namespace BasicsOfLINQ
         /// <summary>
         /// Проекция с помощью операторов LINQ: выбор св-ва Name
         /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
         public static void ProjectionLINQ1(List<User> users)
         {
             var names = from u in users // Определяем каждый объект из users как u
@@ -218,6 +225,7 @@ namespace BasicsOfLINQ
         /// <summary>
         /// Проекция с помощью операторов LINQ: выбор объекта анонимного типа
         /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
         public static void ProjectionLINQ2(List<User> users)
         {
             var names = from u in users 
@@ -242,6 +250,7 @@ namespace BasicsOfLINQ
         /// <summary>
         /// Проекция с помощью метода расширения Select: выбор объекта анонимного типа
         /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
         public static void ProjectionEM(List<User> users)
         {
             var names = users.Select(u => u.Name); // Выборка имён
@@ -261,10 +270,11 @@ namespace BasicsOfLINQ
         /// <summary>
         /// Запрос с применением оператора let, изменяющего переменую Name 
         /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
         public static void VarAndOperatorLet(List<User> users)
         {
             var people = from u in users
-                         let name = "Mr. " + u.Name
+                         let name = "Mr. " + u.Name // Производим дополнительное промежуточное вычисление
                          select new
                          {
                              Name = name,
@@ -273,6 +283,22 @@ namespace BasicsOfLINQ
 
             foreach (var p in people)
                 Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Выборка из нескольких источников (из списков пользователей и телефонов)
+        /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
+        /// <param name="phones">Список телефонов, включающий в себя объекты класса Phone (телефон)</param>
+        public static void SamplingFromMultipleSources(List<User> users, List<Phone> phones)
+        {
+            var people = from user in users
+                         from phone in phones
+                         select new { Name = user.Name, Phone = phone.Name };
+
+            foreach (var p in people)
+                Console.WriteLine($"{p.Name} - {p.Phone}");
             Console.WriteLine();
         }
     }
