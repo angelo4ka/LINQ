@@ -10,15 +10,30 @@ namespace BasicsOfLINQ
     {
         static void Main(string[] args)
         {
+            #region Списки и переменные для работы программы
             string[] teams = { "Бавария", "Боруссия", "Реал Мадрид", "Манчестер Сити", "ПСЖ", "Барселона" };
             string character;
+            int[] numbers = { 1, 2, 3, 4, 10, 34, 55, 66, 77, 88 };
+            List<User> users = new List<User>
+            {
+                new User {Name="Том", Age=23, Languages = new List<string> {"английский", "немецкий" }}, // Добавление в список нового объекта (пользователя)
+                new User {Name="Боб", Age=27, Languages = new List<string> {"английский", "французский" }},
+                new User {Name="Джон", Age=29, Languages = new List<string> {"английский", "испанский" }},
+                new User {Name="Элис", Age=24, Languages = new List<string> {"испанский", "немецкий" }}
+            };
+            #endregion
 
-            Console.Write("Введите букву команды, по которой будет происходить выборка (регистр не имеет значения): ");
-            character = Console.ReadLine();
-            character = character.ToUpper();
 
-            Scoring(teams, character);
-            SelectionWithLINQ(teams, character);
+            //#region Урок 1
+            //Console.Write("Введите букву команды, по которой будет происходить выборка (регистр не имеет значения): ");
+            //character = Console.ReadLine();
+            //character = character.ToUpper();
+
+            //Scoring(teams, character);
+            //SelectionWithLINQ(teams, character);
+            //#endregion
+
+            SelectingComplexObjEM(users);
 
             Console.WriteLine("Конец программы. Для выхода из неё нажмите любую клавишу на клавиатуре.");
             Console.ReadKey();
@@ -85,6 +100,70 @@ namespace BasicsOfLINQ
             if (number != 0)
                 Console.WriteLine($"Найдено: {number}\n=====================");
             else Console.WriteLine("Результат: по Вашему запросу ничего не найдено.");
+        }
+
+        /// <summary>
+        /// Фильтрация с помощью операторов LINQ: выбор всех чётных элементов, которые больше 10
+        /// </summary>
+        /// /// <param name="numbers">Одномерный массив, хранящий данные типа int (набор чисел)</param>
+        public static void FilteringLINQ(int[] numbers)
+        {
+            // Перечислитель параметров типа int
+            IEnumerable<int> evens = from i in numbers // Определяем каждый объект из numbers как i
+                                     where i % 2 == 0 && i > 10 // Фильтрация по критерию (находим чётные элементы, которые больше 10)
+                                     select i; // Выбираем объект (добавляем в перечислитель)
+
+            // Каждый элемент из перечислителя "evens" выводится (печатается) на экран
+            foreach (int i in evens) 
+                Console.WriteLine(i);
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Фильтрация с помощью метода расширения: выбор всех чётных элементов, которые больше 10
+        /// </summary>
+        /// <param name="numbers">Одномерный массив, хранящий данные типа int (набор чисел)</param>
+        public static void FilteringEM(int[] numbers)
+        {
+            // В перечислитель параметров типа int выбираем и добавляем чётные элементы, которые больше 10
+            IEnumerable<int> evens = numbers.Where(i => i % 2 == 0 && i > 10);
+
+            // Каждый элемент из перечислителя "evens" выводится (печатается) на экран
+            foreach (int i in evens)
+                Console.WriteLine(i);
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Выборка сложных объектов с помощью операторов LINQ: выбор из пользователей, возраст которых больше 25 лет
+        /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
+        public static void SelectingComplexObjLINQ(List<User> users)
+        {
+            var selectedUsers = from user in users
+                                where user.Age > 25 // Выборка пользователей, возраст которых больше 25 лет
+                                select user;
+
+            // Вывод информации о пользователях из выборки
+            foreach (User user in selectedUsers)
+                Console.WriteLine($"{user.Name} - {user.Age}");
+            Console.WriteLine();
+        }
+
+
+
+        /// <summary>
+        /// Выборка сложных объектов с помощью метода расширения: выбор из пользователей, возраст которых больше 25 лет
+        /// </summary>
+        /// <param name="users">Список пользователей, включающий в себя объекты класса User (пользователь)</param>
+        public static void SelectingComplexObjEM(List<User> users)
+        {
+            var selectedUsers = users.Where(u => u.Age > 25); // Выборка пользователей, возраст которых больше 25 лет
+
+            // Вывод информации о пользователях из выборки
+            foreach (User user in selectedUsers)
+                Console.WriteLine($"{user.Name} - {user.Age}");
+            Console.WriteLine();
         }
     }
 }
