@@ -214,5 +214,29 @@ namespace BasicsOfLINQ
                 Console.WriteLine(n);
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Проекция с помощью операторов LINQ: выбор объекта анонимного типа
+        /// </summary>
+        public static void ProjectionLINQ2(List<User> users)
+        {
+            var names = from u in users 
+                        select u.Name; // Выбираем объект - имя пользователя
+
+            foreach (string n in names)
+                Console.WriteLine(n);
+            Console.WriteLine();
+           
+            var items = from u in users // Определяем каждый объект из users как u
+                        select new // Выбираем объект анонимного типа
+                        {
+                            FirstName = u.Name,
+                            DateOfBirth = DateTime.Now.Year - u.Age // Высчитываем год рождения
+                        };
+
+            foreach (var n in items)
+                Console.WriteLine($"{n.FirstName} - {n.DateOfBirth}");
+            Console.WriteLine();
+        }
     }
 }
