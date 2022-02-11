@@ -257,5 +257,23 @@ namespace BasicsOfLINQ
                 Console.WriteLine($"{n.FirstName} - {n.DateOfBirth}");
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Запрос с применением оператора let, изменяющего переменую Name 
+        /// </summary>
+        public static void VarAndOperatorLet(List<User> users)
+        {
+            var people = from u in users
+                         let name = "Mr. " + u.Name
+                         select new
+                         {
+                             Name = name,
+                             Age = u.Age
+                         };
+
+            foreach (var p in people)
+                Console.WriteLine($"{p.Name} - {p.Age}");
+            Console.WriteLine();
+        }
     }
 }
